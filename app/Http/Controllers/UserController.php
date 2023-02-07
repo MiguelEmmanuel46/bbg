@@ -20,7 +20,7 @@ class UserController extends Controller {
             $params_array = array_map('trim', $params_array);
             //validar datos
             $validate = \Validator::make($params_array, [
-                        'name' => 'required|alpha',
+                        'name' => 'required|regex:/^[\pL\s\-]+$/u',
                         'email' => 'required|email|unique:users', //comprobar si el uusaurio esta duplicado
                         'password' => 'required',
                         'password_confirmation' => 'required'
