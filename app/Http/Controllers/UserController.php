@@ -16,7 +16,7 @@ class UserController extends Controller {
         if (!empty($params) && !empty($params_array)) {
 
 
-            //limpiardatos
+            //limpiardatoscomment
             $params_array = array_map('trim', $params_array);
             //validar datos
             $validate = \Validator::make($params_array, [
