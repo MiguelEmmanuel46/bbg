@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Mail\Contacto;
+//use Illuminate\Support\Facades\Mail;
 
 /*
   |--------------------------------------------------------------------------
@@ -51,3 +53,12 @@ Route::resource('/api/servicios', 'App\Http\Controllers\ServiciosController');
 
 //rutas del controlador de contactop
 Route::resource('/api/contacto', 'App\Http\Controllers\ContactoController');
+
+Route::post('/api/contacto-formulario', 'App\Http\Controllers\FormularioController@index');
+
+/*
+Route::get('/api/contacto-formulario', function(){
+    $response = Mail::mailer("smtp")->to('contacto@bsgl.mx')->send(new Contacto("Mí ñómbre", "popo2@gmail.com", "2225722956", "Quiero informacion de bancos de p"));
+
+    var_dump($response);
+});*/
