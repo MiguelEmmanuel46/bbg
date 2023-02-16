@@ -61,7 +61,7 @@ class FormularioController extends Controller
         }
 
 
-        return response()->json($data['message']);
+        return response()->json([$data,$data['message']]);
     }
 
 }
