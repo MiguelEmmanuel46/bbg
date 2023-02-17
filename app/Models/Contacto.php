@@ -15,24 +15,4 @@ class Contacto extends Model
      public function servicios() {
         return $this->belongsTo('App\Models\Servicios', 'id');
     }
-
-    /***********************************/
-    
-    
-    
-    
-     /* public function servicios(){
-    	//return $this->belongsTo('Servicios','id_servicio');
-          return $this->hasMany('App\Models\Servicios');
-    }
-    */
-     
-    /*public function servicios(){
-    	return $this->hasMany('App\Servicios');
-    }/**/
-    
-      
-    
-    
-
 }
