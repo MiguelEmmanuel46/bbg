@@ -45,12 +45,11 @@ class FormularioController extends Controller
                 //$data = Mail::mailer("smtp")->to('contacto@bsgl.mx')->send();
                  Mail::mailer("smtp")->to('contacto@bsgl.mx')->send(new Contacto($name, $email, $telefono, $mensaje));
                  $data = array(
-                    'status' => 'succes',
+                    'status' => 'success',
                     'code' => 200,
-                    'message' => 'Tu mensaje se ha enviado correctamente, pronto nuestro equipo se pondra en contacto contigo, gracias. '
+                     'message' => 'El mensaje se ha enviado '
                 );
 
-                //$data = Mail::mailer("smtp")->to('contacto@bsgl.mx')->send(new Contacto($nombre, $email, $telefono, $mensaje));
             }
         } else {
             $data = array(
@@ -61,7 +60,7 @@ class FormularioController extends Controller
         }
 
 
-        return response()->json([$data,$data['message']]);
+        return response()->json($data);
     }
 
 }
