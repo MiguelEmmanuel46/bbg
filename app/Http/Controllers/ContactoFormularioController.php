@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Contacto;
+use App\Models\ContactoForm;
 
 class ContactoFormulario extends Controller
 {
@@ -50,7 +51,19 @@ class ContactoFormulario extends Controller
                 $cf->telefono = $params_array['telefono'];
                 $cf->mensaje = $params_array['mensaje'];
                $cf->build($name,$email,$telefono,$mensaje); 
-             //$data = Mail::mailer("smtp")->to('contacto@bsgl.mx')->send(new Contacto($nombre, $email, $telefono, $mensaje));
+               
+               $contactoform = new ContactoForm();
+                $contactoform->name = $params_array['name'];;
+                $contactoform->email = $params_array['email'];
+                $contactoform->telefono = $params_array['telefono'];
+                $contactoform->mensaje = $params_array['mensaje'];
+                $contactoform->save();
+                $data = array(
+                    'code' => 200,
+                    'status' => 'succcess',
+                    'message' => 'servicio guardado db'
+                );
+                //$data = Mail::mailer("smtp")->to('contacto@bsgl.mx')->send(new Contacto($nombre, $email, $telefono, $mensaje));
             }
         } else {
             $data = array(

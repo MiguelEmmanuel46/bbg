@@ -10,4 +10,6 @@ Route::resource('/api/servicios', 'App\Http\Controllers\ServiciosController');
 //rutas del controlador de contactop
 Route::resource('/api/contacto', 'App\Http\Controllers\ContactoController');
 Route::post('/api/contacto-formulario', 'App\Http\Controllers\FormularioController@index');
+Route::get('/api/contacto-data', 'App\Http\Controllers\ContactoFormController@index');
+
 
