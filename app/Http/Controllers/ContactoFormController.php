@@ -23,7 +23,7 @@ class ContactoFormController extends Controller {
             $user = $jwtAuth->checkToken($token, true);
             /**/
             
-            $contactoform = ContactoForm::all();
+            $contactoform = ContactoForm::all()->sortByDesc("id");
             $data = array(
                 'code' => 200,
                 'status' => 'succcess',
