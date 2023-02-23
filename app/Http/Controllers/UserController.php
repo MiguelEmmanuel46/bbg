@@ -9,58 +9,80 @@ class UserController extends Controller {
 
     //
     public function register(Request $request) {
-        //recoger dtaos de usuario por post
-        $json = $request->input('json', null);
-        $params = json_decode($json);
-        $params_array = json_decode($json, true);
-        if (!empty($params) && !empty($params_array)) {
+        //comprobar uuario identificasdo
+        $token = $request->header('Authorization');
+        $jwtAuth = new \JwtAuth();
+        $checkToken = $jwtAuth->checkToken($token);
+        if ($checkToken) {
+            //sacar suuario idenificado
+            $user = $jwtAuth->checkToken($token, true);
+            if ($user->role == 'ROLE_ADMIN') {
+                 //recoger dtaos de usuario por post
+                $json = $request->input('json', null);
+                $params = json_decode($json);
+                $params_array = json_decode($json, true);
+                if (!empty($params) && !empty($params_array)) {
 
 
-            //limpiardatoscomment
-            $params_array = array_map('trim', $params_array);
-            //validar datos
-            $validate = \Validator::make($params_array, [
-                        'name' => 'required|regex:/^[\pL\s\-]+$/u',
-                        'email' => 'required|email|unique:users', //comprobar si el uusaurio esta duplicado
-                        'password' => 'required',
-                        'password_confirmation' => 'required'
-            ]);
+                    //limpiardatoscomment
+                    $params_array = array_map('trim', $params_array);
+                    //validar datos
+                    $validate = \Validator::make($params_array, [
+                                'name' => 'required|regex:/^[\pL\s\-]+$/u',
+                                'email' => 'required|email|unique:users', //comprobar si el uusaurio esta duplicado
+                                'password' => 'required',
+                                'password_confirmation' => 'required'
+                    ]);
 
-            if ($validate->fails()) {
+                    if ($validate->fails()) {
+                        $data = array(
+                            'status' => 'error',
+                            'code' => 404,
+                            'message' => 'El usuario no se ha creado ',
+                            'errors' => $validate->errors()
+                        );
+                    } else {
+                        //cifrar password
+                        //$pwd = password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);
+                        $pwd = hash('sha256', $params->password);
+
+                        //crear el usuario
+                        $user = new User();
+                        $user->name = $params_array['name'];
+                        $user->email = $params_array['email'];
+                        $user->password = $pwd;
+                        $user->role = 'ROLE_USER';
+                        $user->save();
+                        //$user->name = $params_array['name'];
+
+                        $data = array(
+                            'status' => 'succes',
+                            'code' => 200,
+                            'message' => 'El usuario se ha creado '
+                        );
+                    }
+                } else {
+                    $data = array(
+                        'status' => 'error',
+                        'code' => 404,
+                        'message' => 'Los datos enviados no son correctos'
+                    );
+                }
+            }else{
                 $data = array(
                     'status' => 'error',
                     'code' => 404,
-                    'message' => 'El usuario no se ha creado ',
-                    'errors' => $validate->errors()
-                );
-            } else {
-                //cifrar password
-                //$pwd = password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);
-                $pwd = hash('sha256', $params->password);
-
-                //crear el usuario
-                $user = new User();
-                $user->name = $params_array['name'];
-                $user->email = $params_array['email'];
-                $user->password = $pwd;
-                $user->save();
-                //$user->name = $params_array['name'];
-
-                $data = array(
-                    'status' => 'succes',
-                    'code' => 200,
-                    'message' => 'El usuario se ha creado '
+                    'message' => 'No eres administrador'
                 );
             }
         } else {
             $data = array(
+                'code' => 400,
                 'status' => 'error',
-                'code' => 404,
-                'message' => 'Los datos enviados no son correctos'
+                'message' => 'El usuario no esta identificado'
             );
         }
-
-
+       
         return response()->json($data, $data['code']);
     }
 
