@@ -17,7 +17,7 @@ class UserController extends Controller {
             //sacar suuario idenificado
             $user = $jwtAuth->checkToken($token, true);
             if ($user->role == 'ROLE_ADMIN') {
-                 //recoger dtaos de usuario por post
+                //recoger dtaos de usuario por post
                 $json = $request->input('json', null);
                 $params = json_decode($json);
                 $params_array = json_decode($json, true);
@@ -68,7 +68,7 @@ class UserController extends Controller {
                         'message' => 'Los datos enviados no son correctos'
                     );
                 }
-            }else{
+            } else {
                 $data = array(
                     'status' => 'error',
                     'code' => 404,
@@ -82,7 +82,7 @@ class UserController extends Controller {
                 'message' => 'El usuario no esta identificado'
             );
         }
-       
+
         return response()->json($data, $data['code']);
     }
 
@@ -120,9 +120,7 @@ class UserController extends Controller {
     }
 
     public function update(Request $request) {
-
         //comprobar uuario identificasdo
-
         $token = $request->header('Authorization');
         $jwtAuth = new \JwtAuth();
         $checkToken = $jwtAuth->checkToken($token);
@@ -140,19 +138,26 @@ class UserController extends Controller {
                         'name' => 'required|alpha',
                         'email' => 'required|email|unique:users,' . $user->sub
             ]);
+            
+            $pwd = hash('sha256', $params_array['password']);
+            $npa = array(
+                'name' => $params_array['name'],
+                'password' => $pwd
+            );
             //quitar campos que no se  quieren actualizar
             unset($params_array['id']);
             unset($params_array['email']);
-            unset($params_array['password']);
+            //unset($params_array['password']);
             unset($params_array['created_at']);
             unset($params_array['remember_token']);
             //actualizar usuaroi en db
-            $user_update = User::where('id', $user->sub)->update($params_array);
+            $user_update = User::where('id', $user->sub)->update($npa);
             //devolver array con resultado 
             $data = array(
                 'code' => 200,
                 'status' => 'success',
-                'message' => 'Usuario actualizado'
+                'message' => 'Usuario actualizado',
+                'changes' => $npa
             );
         } else {
             $data = array(
@@ -174,8 +179,8 @@ class UserController extends Controller {
                 'status' => 'success',
                 'user' => $user
             );
-        }else{
-                        $data = array(
+        } else {
+            $data = array(
                 'code' => 404,
                 'status' => 'error',
                 'message' => 'El usuario no existe'
