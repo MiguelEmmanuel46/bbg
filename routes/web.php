@@ -12,4 +12,7 @@ Route::resource('/api/contacto', 'App\Http\Controllers\ContactoController');
 Route::post('/api/contacto-formulario', 'App\Http\Controllers\FormularioController@index');
 Route::get('/api/contacto-data', 'App\Http\Controllers\ContactoFormController@index');
 
+Route::post('/api/sendPasswordResetLink', 'App\Http\Controllers\PasswordResetRequestController@sendEmail');
+Route::post('/api/resetPassword', 'App\Http\Controllers\ChangePasswordController@passwordResetProcess');
+
 
