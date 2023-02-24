@@ -81,7 +81,7 @@ class PasswordResetRequestController extends Controller
          $data = array(
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'Reset Email is send successfully, please check your inbox.'
+                'message' => 'Las instrucciones para restablecer el password se enviaron al correo electronico. Verifica tu correo electrónico.'
             );
         /*return response()->json([
                     'data' => 'Reset Email is send successfully, please check your inbox.'

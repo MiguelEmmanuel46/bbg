@@ -73,9 +73,14 @@ class ChangePasswordController extends Controller
         ]);
         // remove verification data from db
         $this->updatePasswordRow($request)->delete();
-        return response()->json([
+        $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Contraseña actualizada.'
+            );
+            /*return response()->json([
                         'data' => 'Password has been updated.'
-                            ], Response::HTTP_CREATED);
+                            ], Response::HTTP_CREATED);*/
         } else {
             $data = array(
                 'status' => 'error',
@@ -84,6 +89,7 @@ class ChangePasswordController extends Controller
             );
         }
         // reset password response
+         return response()->json($data);
         
     }
 
