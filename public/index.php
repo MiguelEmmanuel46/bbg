@@ -4,7 +4,6 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
-$ppf = dirname(dirname(__DIR__));
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +16,7 @@ $ppf = dirname(dirname(__DIR__));
 |
 */
 
-if (file_exists($maintenance = $ppf.'/../storage/framework/maintenance.php')) {
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
@@ -32,7 +31,7 @@ if (file_exists($maintenance = $ppf.'/../storage/framework/maintenance.php')) {
 |
 */
 
-require  $ppf.'/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +44,7 @@ require  $ppf.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once  $ppf.'/../bootstrap/app.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 

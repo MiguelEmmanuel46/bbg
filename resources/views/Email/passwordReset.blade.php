@@ -3,7 +3,7 @@
 
 Clic al boton para restablecer la contraseña
 
-@component('mail::button', ['url' => 'https://bsgl.mx/password-reset?token='.$token.'&email='.$email])
+@component('mail::button', ['url' => 'http://bsgl.mx/#/password-reset?token='.$token.'&email='.$email])
 Restablecer password
 @endcomponent
 
